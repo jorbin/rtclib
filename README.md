@@ -3,7 +3,7 @@
 rtclib (SCANLAB's RTC library for C#)
 
 1. Descriptions                                                
-  Library for Scanlab's RTC 5/6/6Ether/SyncAxis                 
+  Library for Scanlab's RTC 5/6/6Ether             
                                                                 
                                                                 
 2. Author                                                      
