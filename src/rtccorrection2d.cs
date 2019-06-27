@@ -18,7 +18,7 @@
  *  RRRRRRRR     RRRRRRR      TTTTTTTTTTT             CCCCCCCCCCCCCLLLLLLLLLLLLLLLLLLLLLLLLIIIIIIIIIIBBBBBBBBBBBBBBBBB   
  *    
  *    
- * concreate class for field correction file by correXionPro.exe
+ * concrete class for field correction by correXionPro.exe
  * Description : super easy library for SCANLAB's RTC 5, 6, 6Ethernet
  * Author : hong chan, choi / sepwind@gmail.com (https://sepwind.blogspot.com)
  * 

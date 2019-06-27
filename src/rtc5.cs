@@ -37,12 +37,12 @@ namespace sepwind
     {
         public uint Index { get; }
 
-        protected double kFactor;      
-        protected string[] ctbFileName = new string[4 + 1];
-        protected bool aborted;
-        protected uint listIndex;
-        protected uint listCount;
-        protected Matrix3x2 matrix;
+        private double kFactor;
+        private string[] ctbFileName = new string[4 + 1];
+        private bool aborted;
+        private uint listIndex;
+        private uint listCount;
+        private Matrix3x2 matrix;
         private bool disposed = false;
 
         public Rtc5(uint index)
@@ -76,7 +76,7 @@ namespace sepwind
         {
             Debug.Assert(kFactor > 0);
             RTC5Wrap.n_stop_execution(this.Index + 1);
-            uint error = RTC5Wrap.n_load_program_file(this.Index + 1, "");
+            uint error = RTC5Wrap.n_load_program_file(this.Index + 1, string.Empty);
             uint cardCnt = RTC5Wrap.rtc5_count_cards();
             uint dllVersion = RTC5Wrap.get_dll_version();
             uint hexVersion = RTC5Wrap.get_hex_version();
@@ -358,7 +358,7 @@ namespace sepwind
                 return false;
             if (!this.IsListReady(1))
                 return false;
-            RTC5Wrap.n_laser_signal_on_list(this.Index + 1);
+            RTC5Wrap.n_laser_on_list(this.Index + 1, (uint)(msec / 100.0));
             return true;
         }
         public bool ListLaserOn()

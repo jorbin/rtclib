@@ -75,7 +75,7 @@ namespace sepwind
         {
             Debug.Assert(this.kFactor > 0);
             RTC6Wrap.n_stop_execution(this.Index + 1);
-            uint error = RTC6Wrap.n_load_program_file(this.Index + 1, "");           
+            uint error = RTC6Wrap.n_load_program_file(this.Index + 1, string.Empty);           
             uint cardCnt = RTC6Wrap.rtc6_count_cards();
             uint dllVersion = RTC6Wrap.get_dll_version();
             uint hexVersion = RTC6Wrap.get_hex_version();
@@ -358,7 +358,7 @@ namespace sepwind
                 return false;
             if (!this.IsListReady(1))
                 return false;
-            RTC6Wrap.n_laser_signal_on_list(this.Index + 1);
+            RTC6Wrap.n_laser_on_list(this.Index + 1, (uint)(msec / 100.0));
             return true;
         }
         public bool ListLaserOn()
