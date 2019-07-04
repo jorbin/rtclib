@@ -37,6 +37,13 @@ namespace sepwind
         /// <summary>
         /// absolute position values (x, y are measured location values)
         /// z value reserved for 3d calibration.
+        /// 
+        /// At grid points count = 9
+        /// the order of inserted v are ...
+        ///  1 2 3
+        ///  4 5 6
+        ///  7 8 9
+        /// 
         /// </summary>
         /// <param name="v">x, y, (z)</param>
         /// <returns></returns>
@@ -57,13 +64,13 @@ namespace sepwind
         /// <summary>
         /// try to convert to create new ct5 file
         /// </summary>
-        /// <returns></returns>
+        /// <returns>look into result string by Result() whether convert is success or not</returns>
         bool Convert();
 
         /// <summary>
         /// result string
         /// </summary>
-        /// <returns></returns>
+        /// <returns>result log message</returns>
         string Result();      
     }
 }

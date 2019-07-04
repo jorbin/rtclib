@@ -34,12 +34,14 @@ namespace sepwind
     internal sealed class Rtc6Ethernet : Rtc6 
     {
         private IPAddress ipAddress;
+        private IPAddress subNetMask;
         private bool disposed = false;
 
-        public Rtc6Ethernet(uint index, string ipAddress)
+        public Rtc6Ethernet(uint index, string ipAddress, string subNetMask=@"255.255.255.0")
             : base(index)
         {
-            this.ipAddress = IPAddress.Parse(ipAddress);            
+            this.ipAddress = IPAddress.Parse(ipAddress);
+            this.subNetMask = IPAddress.Parse(subNetMask);
         }
         public override bool Initialize(double kFactor, LaserMode laserMode, string ctbFileName)
         {
@@ -48,8 +50,10 @@ namespace sepwind
             RTC6Wrap.eth_set_search_cards_timeout(200 * 1000); 
             result = RTC6Wrap.eth_search_cards(
                 RTC6Wrap.eth_convert_string_to_ip(this.ipAddress.ToString()), 
-                RTC6Wrap.eth_convert_string_to_ip("255.255.255.0"));
-            int assign_result = RTC6Wrap.eth_assign_card_ip(RTC6Wrap.eth_convert_string_to_ip(this.ipAddress.ToString()), base.Index + 1);
+                RTC6Wrap.eth_convert_string_to_ip(this.subNetMask.ToString()));
+            int assign_result = RTC6Wrap.eth_assign_card_ip(
+                RTC6Wrap.eth_convert_string_to_ip(this.ipAddress.ToString()), 
+                base.Index + 1);
             if (base.Index + 1 != assign_result)           
                 return false;
 

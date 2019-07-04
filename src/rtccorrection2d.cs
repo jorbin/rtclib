@@ -53,7 +53,7 @@ namespace sepwind
         /// <param name="interval">distance between each grids</param>
         /// <param name="srcCtbFile">source ct5 filename</param>
         /// <param name="targetCtbFile">target ct5 filename</param>
-        RtcCorrection2D(uint numOfPoints, float kFactor, float interval, string srcCtbFile, string targetCtbFile)
+        public RtcCorrection2D(uint numOfPoints, float kFactor, float interval, string srcCtbFile, string targetCtbFile)
         {
             Debug.Assert(numOfPoints > 0);
             this.container = new List<Vector3>();
@@ -101,14 +101,14 @@ namespace sepwind
                 stream.WriteLine($"NEWCAL\t= {this.kFactor:F8}");
                 int grid = (int)Math.Sqrt((double)this.numOfPoints);
                 int index = 0;
-                double top = this.interval * (int)(grid / 2);   
+                double top = this.interval * (double)(grid / 2);   
                 for (int row = 0; row < grid; row++)
                 {
-                    double left = -this.interval * (int)(grid / 2); 
-                    top = top - row * this.interval;
+                    double left = -this.interval * (double)(grid / 2); 
+                    top = top - (double)row * this.interval;
                     for (int col = 0; col < grid; col++)
                     {
-                        left = left + col * this.interval;
+                        left = left + (double)col * this.interval;
                         stream.WriteLine($"\t{left} \t{this.container[index].X:F3} {this.container[index].Y:F3}");
                         index++;
                     }

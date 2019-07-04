@@ -1,4 +1,12 @@
-﻿using System;
+﻿/*
+ *
+ * Testcase program for rtclib
+ * Author : hong chan, choi / sepwind @gmail.com(https://sepwind.blogspot.com)
+ * 
+ */
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
