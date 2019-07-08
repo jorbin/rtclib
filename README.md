@@ -3,14 +3,10 @@
 Super-easy library for SCANLAB's RTC via C#
 
 1. Descriptions                                                
-  support RTC5/6/6Ether controller
-  
-  support field correction (via correXionPro.exe)
-  
-  support matrix with push/pop stack
-  
-  support MVC concepts(entity/layer/block)
-  
+  support RTC5/6/6Ether controller  
+  support field correction (via correXionPro.exe)  
+  support matrix with push/pop stack  
+  support MVC concepts(entity/layer/block)  
   support Opengl renderer (working...)
   
   
