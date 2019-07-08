@@ -7,6 +7,7 @@
 
 
 using System;
+using System.Diagnostics;
 using System.Numerics;
 
 namespace sepwind
@@ -47,10 +48,8 @@ namespace sepwind
             ConsoleKeyInfo key;
             do
             {
-                Console.WriteLine("Testcase for rtclib. powered by sepwind@gmail.com");
-                Console.WriteLine("Warning !!! It must be laser ACTIVE !!!");
-                Console.WriteLine("");
-                Console.WriteLine("select your target :  (Q : quit)");
+                Console.WriteLine("Testcase for rtclib. powered by sepwind@gmail.com (https://sepwind.blogspot.com)");
+                Console.WriteLine("");                
                 Console.WriteLine("'C' : draw circle");
                 Console.WriteLine("'R' : draw rectangle");
                 Console.WriteLine("'D' : draw circle with dots");
@@ -58,10 +57,12 @@ namespace sepwind
                 Console.WriteLine("'F' : draw entities for field correction");
                 Console.WriteLine("'Q' : quit");
                 Console.WriteLine("");
+                Console.Write("select your target : ");
                 key = Console.ReadKey(false);
                 if (key.Key == ConsoleKey.Q)
                     break;
 
+                var timer = new Stopwatch();
                 switch (key.Key)
                 {
                     case ConsoleKey.C: 
@@ -85,6 +86,7 @@ namespace sepwind
                 if (key.Key == ConsoleKey.Q)
                     break;
                 rtc.ListExecute(true);
+                Console.WriteLine($"processing time = {timer.ElapsedMilliseconds/1000.0:F3}s");                
             } while (true);
 
             rtc.Dispose();

@@ -35,15 +35,9 @@ namespace sepwind
     interface IRtcCorrection
     {
         /// <summary>
-        /// absolute position values (x, y are measured location values)
-        /// z value reserved for 3d calibration.
-        /// 
-        /// At grid points count = 9
-        /// the order of inserted v are ...
-        ///  1 2 3
-        ///  4 5 6
-        ///  7 8 9
-        /// 
+        /// absolute position (mm)
+        /// x, y are measured absoulte position values
+        /// z value reserved for 3d calibration.     
         /// </summary>
         /// <param name="v">x, y, (z)</param>
         /// <returns></returns>

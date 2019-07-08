@@ -8,36 +8,38 @@ using System.Threading.Tasks;
 namespace sepwind
 {
     /// <summary>
-    /// line entity
+    /// point entity
     /// </summary>
-    public class Line
+    public class Point
         : Entity
     {
         /// <summary>
-        /// start position
+        /// position
         /// </summary>
-        public Vector2 Start { get; set; }
+        public Vector2 Pos { get; set; }
         /// <summary>
-        /// end position
+        /// msec
         /// </summary>
-        public Vector2 End { get; set; }        
+        public double Time { get; set; }
 
         /// <summary>
         /// constructor
         /// </summary>
         /// <param name="layer"></param>
-        public Line(Layer layer)
-            : base("Line", layer)
+        public Point(Layer layer)
+            : base("Point", layer)
         {
         }
-
-        public Line(Layer layer, Vector2 start, Vector2 end)
-            : this (layer)
+        public Point(Layer layer, Vector2 pos)
+            : this(layer)
         {
-            this.Start = start;
-            this.End = end;
+            this.Pos = pos;
         }
-
+        public Point(Layer layer, Vector2 pos, double timeMsec)
+            : this(layer, pos)
+        {
+            this.Time = timeMsec;
+        }
         /// <summary>
         /// laser processing
         /// </summary>
@@ -47,9 +49,9 @@ namespace sepwind
         {
             bool success = true;
             ///jump to start pos
-            success &= rtc.ListJump(this.Start);
-            ///mark to end pos
-            success &= rtc.ListMark(this.End);
+            success &= rtc.ListJump(this.Pos);
+            ///dwell during assgined time
+            success &= rtc.ListWait(this.Time);
             return success;
         }
     }

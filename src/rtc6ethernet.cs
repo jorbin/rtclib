@@ -35,9 +35,8 @@ namespace sepwind
     {
         private IPAddress ipAddress;
         private IPAddress subNetMask;
-        private bool disposed = false;
 
-        public Rtc6Ethernet(uint index, string ipAddress, string subNetMask=@"255.255.255.0")
+        public Rtc6Ethernet(uint index, string ipAddress, string subNetMask = @"255.255.255.0")
             : base(index)
         {
             this.ipAddress = IPAddress.Parse(ipAddress);
@@ -58,7 +57,7 @@ namespace sepwind
                 return false;
 
             RTC6Wrap.n_stop_execution(base.Index + 1);
-            uint error = RTC6Wrap.n_load_program_file(base.Index + 1, "");            
+            uint error = RTC6Wrap.n_load_program_file(base.Index + 1, string.Empty);            
             uint cardCnt = RTC6Wrap.rtc6_count_cards();
             uint dllVersion = RTC6Wrap.get_dll_version();
             uint hexVersion = RTC6Wrap.get_hex_version();
