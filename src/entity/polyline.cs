@@ -115,9 +115,38 @@ namespace sepwind.src.entity
             ///explode entity to line and arcs
             List<Entity> entities = this.Explode();
             bool success = true;
+            //incorrect way to create continous paths
+            //foreach (var entity in entities)
+            //{
+            //    success &= entity.Mark(rtc);
+            //    if (!success)
+            //        break;
+            //}
+            bool first = false;
             foreach (var entity in entities)
             {
-                success &= entity.Mark(rtc);
+                if (entity is Line)
+                {
+                    Line line = entity as Line;
+                    if (!first)
+                    {
+                        rtc.ListJump(new Vector2((float)line.StartX, (float)line.StartY));
+                        first = true;
+                    }
+                    rtc.ListMark(new Vector2((float)line.EndX, (float)line.EndY));
+                }
+                else
+                {
+                    Arc arc = entity as Arc;
+                    if (!first)
+                    {
+                        double x = arc.Radius * Math.Sin(arc.StartAngle * Math.PI / 180.0);
+                        double y = arc.Radius * Math.Cos(arc.SweepAngle * Math.PI / 180.0);
+                        success &= rtc.ListJump(new Vector2((float)(x + arc.X), (float)(y + arc.Y)));
+                        first = true;
+                    }
+                    success &= rtc.ListArc(new Vector2((float)arc.X, (float)arc.Y), arc.SweepAngle);
+                }
                 if (!success)
                     break;
             }
