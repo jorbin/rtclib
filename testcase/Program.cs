@@ -7,14 +7,9 @@
 
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using sepwind;
 
-namespace testcase
+namespace sepwind
 {
 
     class Program
@@ -22,61 +17,54 @@ namespace testcase
         static Doc doc;
         static void Main(string[] args)
         {
-            #region RTC 초기화
-            IRtc rtc = new Rtc5(0);
-            double fov = 60;
-            rtc.Initialize(Math.Pow(2, 20) / fov, LaserMode.Yag1, "cor_1to1.ct5");
-            rtc.CtlFrequency(50 * 1000, 2);    ///freq : 50KHz, pulse width : 2usec
-            rtc.CtlSpeed(100, 100); /// 100mm/s
-            rtc.CtlDelay(10, 100, 200, 200, 0);    ///delays
+            #region initialize RTC 
+            IRtc rtc = new Rtc5(0); ///rtc 5 controller
+            double fov = 60;    /// scanner field of view : 60mm
+            /// k factor (bits/mm) = 2^20 / fov
+            double kfactor = Math.Pow(2, 20) / fov;
+            rtc.Initialize(kfactor, LaserMode.Yag1, "cor_1to1.ct5");    ///default correction file
+            rtc.CtlFrequency(50 * 1000, 2); ///laser frequency : 50KHz, pulse width : 2usec
+            rtc.CtlSpeed(100, 100); /// default jump and mark speed : 100mm/s
+            rtc.CtlDelay(10, 100, 200, 200, 0); ///scanner and laser delays
             #endregion
 
-
-            #region 개별 객체(entity) 를 생성하여 추후 스캐너 보정에 쓰는 방식 예제
+            #region create entities for scanner field correction
             doc = new Doc("entities for field correction");
-            /// 나선 모양을 9개 만들어 doc 에 저장
-            Vector2[] examplePos = new Vector2[9];
-            examplePos[0] = new Vector2(-20.0f, 20.0f);
-            examplePos[1] = new Vector2(0.0f, 20.0f);
-            examplePos[2] = new Vector2(20.0f, 20.0f);
-            examplePos[3] = new Vector2(-20.0f, 0.0f);
-            examplePos[4] = new Vector2(0.0f, 0.0f);
-            examplePos[5] = new Vector2(20.0f, 0.0f);
-            examplePos[6] = new Vector2(-20.0f, -20.0f);
-            examplePos[7] = new Vector2(0.0f, -20.0f);
-            examplePos[8] = new Vector2(20.0f, -20.0f);
-
-            Layer layer = doc.Layers.Active;    ///현재 활성 레이어
+            Layer layer = doc.Layers.Active;    ///current active layer
             layer.Clear();
-            for (int i = 0; i < examplePos.Length; i++)
-                layer.Add(new Spiral(
-                        doc.Layers.Active,
-                        0.5, //안의 공백 0.5mm
-                        2.0, //외곽 크기 2mm
-                        5,  //5 바퀴회전
-                        true) //폐곡선
-                    );
+            /// 9 measured points (3x3 positions by milli-meter units)
+            layer.Add(new Spiral(doc.Layers.Active, -20.0f, 20.0f, 0.5, 2.0, 5, true) );
+            layer.Add(new Spiral(doc.Layers.Active, 0.0f, 20.0f, 0.5, 2.0, 5, true));
+            layer.Add(new Spiral(doc.Layers.Active, 20.0f, 20.0f, 0.5, 2.0, 5, true));
+            layer.Add(new Spiral(doc.Layers.Active, -20.0f, 0.0f, 0.5, 2.0, 5, true));
+            layer.Add(new Spiral(doc.Layers.Active, 0.0f, 0.0f, 0.5, 2.0, 5, true));
+            layer.Add(new Spiral(doc.Layers.Active, 20.0f, 0.0f, 0.5, 2.0, 5, true));
+            layer.Add(new Spiral(doc.Layers.Active, -20.0f, -20.0f, 0.5, 2.0, 5, true));
+            layer.Add(new Spiral(doc.Layers.Active, 0.0f, -20.0f, 0.5, 2.0, 5, true));
+            layer.Add(new Spiral(doc.Layers.Active, 20.0f, -20.0f, 0.5, 2.0, 5, true));
             #endregion
 
             ConsoleKeyInfo key;
             do
             {
-                Console.WriteLine("Testcase for rtclib. powered by sepwind@gmail.com");                
+                Console.WriteLine("Testcase for rtclib. powered by sepwind@gmail.com");
+                Console.WriteLine("Warning !!! It must be laser ACTIVE !!!");
+                Console.WriteLine("");
                 Console.WriteLine("select your target :  (Q : quit)");
                 Console.WriteLine("'C' : draw circle");
                 Console.WriteLine("'R' : draw rectangle");
                 Console.WriteLine("'D' : draw circle with dots");
                 Console.WriteLine("'L' : draw lines with rotate");
-                Console.WriteLine("----------------------------------------------");
                 Console.WriteLine("'F' : draw entities for field correction");
                 Console.WriteLine("'Q' : quit");
+                Console.WriteLine("");
                 key = Console.ReadKey(false);
                 if (key.Key == ConsoleKey.Q)
                     break;
 
                 switch (key.Key)
                 {
-                    case ConsoleKey.C:  //circle
+                    case ConsoleKey.C: 
                         DrawCircle(rtc, 10);
                         break;
                     case ConsoleKey.R:
@@ -92,7 +80,7 @@ namespace testcase
                         DrawForFieldCorrection(rtc, doc);
                         break;
                 }
-                Console.WriteLine("press any key to fire the laser ...");
+                Console.WriteLine("WARNING !!! press any key to fire the laser ...");
                 key = Console.ReadKey(false);
                 if (key.Key == ConsoleKey.Q)
                     break;
@@ -101,19 +89,15 @@ namespace testcase
 
             rtc.Dispose();
         }
-
         private static void DrawForFieldCorrection(IRtc rtc, Doc doc)
         {
+            ///laser processing with 3x3 spiral entities
             rtc.ListBegin();
-
-            ///doc 에 있는 레이어의 모든 엔티티를 가공
             foreach(var layer in doc.Layers)
                 foreach (var entity in layer)
                     entity.Mark(rtc);
-
             rtc.ListEnd();
         }
-
         private static void DrawCircle(IRtc rtc, double radius)
         {
             rtc.ListBegin();
@@ -121,7 +105,6 @@ namespace testcase
             rtc.ListArc(new System.Numerics.Vector2(0, 0), 360.0);
             rtc.ListEnd();
         }
-
         private static void DrawRectangle(IRtc rtc, double width, double height)
         {
             rtc.ListBegin();
@@ -132,7 +115,6 @@ namespace testcase
             rtc.ListMark(new System.Numerics.Vector2((float)-width / 2, (float)height / 2));
             rtc.ListEnd();
         }
-
         private static void DrawCircleWithDots(IRtc rtc, double radius, double durationMsec)
         {
             rtc.ListBegin();
@@ -155,7 +137,6 @@ namespace testcase
                 rtc.ListMark(new System.Numerics.Vector2(10, 0));
             }
             rtc.ListEnd();
-        }
-        
+        }       
     }
 }

@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 namespace sepwind
 {
     /// <summary>
-    /// 엔티티 추상 객체
+    /// abstract class for Entity
     /// </summary>
     public abstract class Entity
     {
         public string Name { get; }
 
         /// <summary>
-        /// 자신이 속한 레이어 
+        /// self contained layer
         /// </summary>
         public Layer Layer { get; set; }
 
         /// <summary>
-        /// 생성자
+        /// constructor
         /// </summary>
         /// <param name="name"></param>
         public Entity(string name)
@@ -35,7 +35,7 @@ namespace sepwind
         }
 
         /// <summary>
-        /// 실제 레이저및 스캐너 가공을 하는 추상 함수
+        /// abstract method for RTC processing
         /// </summary>
         /// <param name="rtc"></param>
         /// <returns></returns>

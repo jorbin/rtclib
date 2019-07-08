@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace sepwind
 {
     /// <summary>
-    /// 레이어 
+    /// Layer container
     /// </summary>
     public class Layer
         : List<Entity>

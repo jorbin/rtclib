@@ -48,6 +48,7 @@
     <Compile Include="src\doc\layer.cs" />
     <Compile Include="src\doc\layers.cs" />
     <Compile Include="src\entity\circle.cs" />
+    <Compile Include="src\entity\line.cs" />
     <Compile Include="src\entity\spiral.cs" />
     <Compile Include="src\rtc.cs" />
     <Compile Include="src\rtc5.cs" />

@@ -6,15 +6,18 @@ using System.Threading.Tasks;
 
 namespace sepwind
 {
+    /// <summary>
+    /// Document 
+    /// </summary>
     public class Doc
     {
         /// <summary>
-        /// 식별 이름
+        /// Doc's Name 
         /// </summary>
         public string Name { get; }
 
         /// <summary>
-        /// 레이어 컨테이너
+        /// container for layer
         /// </summary>
         public Layers Layers { get; }
 

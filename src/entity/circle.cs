@@ -8,24 +8,28 @@ using System.Threading.Tasks;
 namespace sepwind
 {
     /// <summary>
-    /// 원 엔티티
+    /// circle entity
     /// </summary>
     public class Circle
         : Entity
     {
         /// <summary>
-        /// 반지름 크기
+        /// radius (mm)
         /// </summary>
         public double Radius { get; set; }       
         /// <summary>
-        /// 중심 X위치
+        /// center X
         /// </summary>
         public double X { get; set; }
         /// <summary>
-        /// 중심 Y위치
+        /// center Y
         /// </summary>
         public double Y { get; set; }
 
+        /// <summary>
+        /// constructor
+        /// </summary>
+        /// <param name="layer"></param>
         public Circle(Layer layer)
             : base("Circle", layer)
         {
@@ -44,17 +48,22 @@ namespace sepwind
             this.Y = y;
         }
 
+        /// <summary>
+        /// laser processing
+        /// </summary>
+        /// <param name="rtc"></param>
+        /// <returns></returns>
         public override bool Mark(IRtc rtc)
         {
             if (this.Radius <= 0)
                 return false;
 
             bool success = true;
-            ///원의 중심 위치 이동
+            ///translate circle's center
             success &= rtc.ListMatrix(Matrix3x2.CreateTranslation((float)this.X, (float)this.Y));
-            ///0 도 위치의 점으로 점프
+            ///jump to start pos
             success &= rtc.ListJump(new Vector2((float)(this.Radius), 0.0f));       
-            /// 360도 시계방향 회전
+            ///rotate 360 degress with CCW
             success &= rtc.ListArc(new Vector2(0.0f, 0.0f), 360.0);
             return success;
         }
