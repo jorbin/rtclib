@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F1B75DC5-865B-4D32-BC6D-9E103DC9CACC}</ProjectGuid>
+    <ProjectGuid>{86B03BA5-B828-4B15-909C-7A844408E103}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>sepwind</RootNamespace>
-    <AssemblyName>testcase</AssemblyName>
+    <AssemblyName>testcase2</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -35,7 +35,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />

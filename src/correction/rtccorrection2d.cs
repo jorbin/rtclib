@@ -39,8 +39,8 @@ namespace sepwind
         private readonly string exeFileName = @"correXionPro.exe";
         private readonly List<Vector3> container;
         private uint numOfPoints;
-        private float kFactor;
-        private float interval;
+        private double kFactor;
+        private double interval;
         private string srcCtbFile;
         private string targetCtbFile;
         private string message;
@@ -53,7 +53,7 @@ namespace sepwind
         /// <param name="interval">distance between each grids</param>
         /// <param name="srcCtbFile">source ct5 filename</param>
         /// <param name="targetCtbFile">target ct5 filename</param>
-        public RtcCorrection2D(uint numOfPoints, float kFactor, float interval, string srcCtbFile, string targetCtbFile)
+        public RtcCorrection2D(uint numOfPoints, double kFactor, double interval, string srcCtbFile, string targetCtbFile)
         {
             Debug.Assert(numOfPoints > 0);
             this.container = new List<Vector3>();
@@ -63,18 +63,11 @@ namespace sepwind
             this.srcCtbFile = srcCtbFile;
             this.targetCtbFile = targetCtbFile;
         }
-        public bool Add(Vector3 v)
+        public bool Add(double x, double y, double z = 0.0)
         {
             if (this.container.Count > this.numOfPoints)           
                 return false;            
-            this.container.Add(v);
-            return true;
-        }
-        public bool AddRange(IEnumerable<Vector3> v)
-        {
-            if (v.Count() > this.numOfPoints)
-                return false;
-            this.container.AddRange(v);
+            this.container.Add( new Vector3((float)x, (float)y, (float)z));
             return true;
         }
         public uint Count()
@@ -90,14 +83,14 @@ namespace sepwind
             this.message = string.Empty;
 
             #region create .dat file
-            string datFileName = String.Format($"{DateTime.Now.Year}{DateTime.Now.Month}{DateTime.Now.Day}-{DateTime.Now.Hour}:{DateTime.Now.Minute}:{DateTime.Now.Second}.dat");
+            string datFileName = String.Format($"{DateTime.Now.Year}{DateTime.Now.Month:D2}{DateTime.Now.Day:D2}-{DateTime.Now.Hour:D2}{DateTime.Now.Minute:D2}{DateTime.Now.Second:D2}.dat");
             string datFileFullPath = String.Format($"{Directory.GetCurrentDirectory()}\\{datFileName}");
             using (var stream = new StreamWriter(datFileFullPath))
             {
                 stream.WriteLine($"//copyright to https://sepwind.blogspot.com : {datFileName}");
                 stream.WriteLine($"OLDCTFILE\t= {this.srcCtbFile}");
                 stream.WriteLine($"NEWCTFILE\t= {this.targetCtbFile}");
-                stream.WriteLine($"TOLERANCE\t0");
+                stream.WriteLine($"TOLERANCE\t=0");
                 stream.WriteLine($"NEWCAL\t= {this.kFactor:F8}");
                 int grid = (int)Math.Sqrt((double)this.numOfPoints);
                 int index = 0;
@@ -109,7 +102,7 @@ namespace sepwind
                     for (int col = 0; col < grid; col++)
                     {
                         left = left + (double)col * this.interval;
-                        stream.WriteLine($"\t{left} \t{this.container[index].X:F3} {this.container[index].Y:F3}");
+                        stream.WriteLine($"\t{left} {top}\t{this.container[index].X:F3} {this.container[index].Y:F3}");
                         index++;
                     }
                 }
@@ -125,7 +118,7 @@ namespace sepwind
             startInfo.Arguments = datFileName;
             using (Process proc = Process.Start(startInfo))
             {
-                if (!proc.WaitForExit(10 * 1000))
+                if (!proc.WaitForExit(5 * 1000))
                     return false;
                 if (0 != proc.ExitCode)
                     return false;
@@ -133,11 +126,12 @@ namespace sepwind
             #endregion
 
             #region read result log file
-            String resultLogFileFullPath = datFileFullPath + ".txt";
-            if (File.Exists(resultLogFileFullPath))
+            String resultLogFileFullPath = String.Format($"{Directory.GetCurrentDirectory()}\\{this.targetCtbFile}.txt");
+            if (!File.Exists(resultLogFileFullPath))
                 return false;
             this.message = File.ReadAllText(resultLogFileFullPath);
             #endregion
+            File.Delete(datFileFullPath);
             return true;
         }
 

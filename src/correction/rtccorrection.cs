@@ -32,18 +32,18 @@ using System.Numerics;
 
 namespace sepwind
 {
-    interface IRtcCorrection
+    public interface IRtcCorrection
     {
         /// <summary>
         /// absolute position (mm)
         /// x, y are measured absoulte position values
         /// z value reserved for 3d calibration.     
-        /// </summary>
-        /// <param name="v">x, y, (z)</param>
+        /// </summary>       
+        /// <param name="x">absoulte x (mm)</param>
+        /// <param name="y">absoulte y (mm)</param>
+        /// <param name="z">for future (varioscan)</param>
         /// <returns></returns>
-        bool Add(Vector3 v);
-
-        bool AddRange(IEnumerable<Vector3> v);
+        bool Add(double x, double y, double z=0.0);
 
         /// <summary>
         /// clear all data
