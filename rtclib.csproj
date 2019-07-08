@@ -49,6 +49,7 @@
     <Compile Include="src\doc\layers.cs" />
     <Compile Include="src\entity\arc.cs" />
     <Compile Include="src\entity\circle.cs" />
+    <Compile Include="src\entity\group.cs" />
     <Compile Include="src\entity\line.cs" />
     <Compile Include="src\entity\param.cs" />
     <Compile Include="src\entity\point.cs" />
