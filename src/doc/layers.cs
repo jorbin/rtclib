@@ -13,16 +13,20 @@ namespace sepwind
         : List<Layer>
     {
         private Layer active;
+        private Doc owner;
 
         /// <summary>
         /// current activated layer
         /// </summary>
         public Layer Active { get { return this.active; } }
 
-        public Layers()
+        public Doc Owner { get { return this.owner; } }
+
+        public Layers(Doc owner)
         {
+            this.owner = owner;
             /// there's one default layer 
-            Layer l = new Layer("default");
+            Layer l = new Layer(this, "default");
             base.Add(l);
             this.active = l;
         }

@@ -40,7 +40,7 @@ namespace sepwind
         /// </summary>
         /// <param name="layer"></param>
         public Arc(Layer layer)
-            : base("Arc", layer)
+            : base(layer, "Arc")
         {
         }
 

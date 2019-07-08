@@ -48,6 +48,8 @@
     <Compile Include="src\doc\layer.cs" />
     <Compile Include="src\doc\layers.cs" />
     <Compile Include="src\entity\arc.cs" />
+    <Compile Include="src\entity\block.cs" />
+    <Compile Include="src\entity\blockinsert.cs" />
     <Compile Include="src\entity\circle.cs" />
     <Compile Include="src\entity\group.cs" />
     <Compile Include="src\entity\line.cs" />

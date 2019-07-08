@@ -62,28 +62,27 @@ namespace sepwind.src.entity
         : Entity
         , IList<PolyLineVertex>
     {
-        private List<PolyLineVertex> vertices;
-
+        private List<PolyLineVertex> list;
         /// <summary>
         /// whethher closed figure or not
         /// </summary>
         public bool Closed { get; set; }
 
         public Polyline(Layer layer)
-           : base("Polyline", layer)
+           : base(layer, "Polyline")
         {
-            this.vertices = new List<PolyLineVertex>();
+            this.list = new List<PolyLineVertex>();
         }
 
         public PolyLineVertex this[int index]
         {
-            get { return this.vertices[index]; }
-            set { this.vertices[index] = value; }
+            get { return this.list[index]; }
+            set { this.list[index] = value; }
         }
 
         public int Count
         {
-            get { return this.vertices.Count; }
+            get { return this.list.Count; }
         }
 
         public bool IsReadOnly
@@ -93,52 +92,52 @@ namespace sepwind.src.entity
 
         public void Add(PolyLineVertex item)
         {
-            this.vertices.Add(item);
+            this.list.Add(item);
         }
 
         public void Clear()
         {
-            this.vertices.Clear();
+            this.list.Clear();
         }
 
         public bool Contains(PolyLineVertex item)
         {
-            return this.vertices.Contains(item);
+            return this.list.Contains(item);
         }
 
         public void CopyTo(PolyLineVertex[] array, int arrayIndex)
         {
-            this.vertices.CopyTo(array, arrayIndex);
+            this.list.CopyTo(array, arrayIndex);
         }
 
         public IEnumerator<PolyLineVertex> GetEnumerator()
         {
-            return this.vertices.GetEnumerator();
+            return this.list.GetEnumerator();
         }
 
         public int IndexOf(PolyLineVertex item)
         {
-            return this.vertices.IndexOf(item);
+            return this.list.IndexOf(item);
         }
 
         public void Insert(int index, PolyLineVertex item)
         {
-            this.vertices.Insert(index, item);
+            this.list.Insert(index, item);
         }
 
         public bool Remove(PolyLineVertex item)
         {
-            return this.vertices.Remove(item);
+            return this.list.Remove(item);
         }
 
         public void RemoveAt(int index)
         {
-            this.vertices.RemoveAt(index);
+            this.list.RemoveAt(index);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.vertices.GetEnumerator();
+            return this.list.GetEnumerator();
         }
 
         /// <summary>
@@ -150,39 +149,10 @@ namespace sepwind.src.entity
         {
             ///explode entity to line and arcs
             List<Entity> entities = this.Explode();
-            bool success = true;
-            //incorrect way to create continous paths
-            //foreach (var entity in entities)
-            //{
-            //    success &= entity.Mark(rtc);
-            //    if (!success)
-            //        break;
-            //}
-            bool first = false;
+            bool success = true;            
             foreach (var entity in entities)
             {
-                if (entity is Line)
-                {
-                    Line line = entity as Line;
-                    if (!first)
-                    {
-                        rtc.ListJump(new Vector2((float)line.StartX, (float)line.StartY));
-                        first = true;
-                    }
-                    rtc.ListMark(new Vector2((float)line.EndX, (float)line.EndY));
-                }
-                else
-                {
-                    Arc arc = entity as Arc;
-                    if (!first)
-                    {
-                        double x = arc.Radius * Math.Sin(arc.StartAngle * Math.PI / 180.0);
-                        double y = arc.Radius * Math.Cos(arc.SweepAngle * Math.PI / 180.0);
-                        success &= rtc.ListJump(new Vector2((float)(x + arc.X), (float)(y + arc.Y)));
-                        first = true;
-                    }
-                    success &= rtc.ListArc(new Vector2((float)arc.X, (float)arc.Y), arc.SweepAngle);
-                }
+                success &= entity.Mark(rtc);
                 if (!success)
                     break;
             }
@@ -194,15 +164,15 @@ namespace sepwind.src.entity
         /// <returns></returns>
         public List<Entity> Explode()
         {
-            List<Entity> entities = new List<Entity>(this.vertices.Count);
+            List<Entity> entities = new List<Entity>(this.Count);
             int index = 0;
-            foreach (var vertex in this.vertices)
+            foreach (var vertex in this)
             {
                 double bulge = vertex.Bulge;
                 PolyLineVertex p1;
                 PolyLineVertex p2;
 
-                if (index == this.vertices.Count - 1)
+                if (index == this.Count - 1)
                 {
                     if (!this.Closed)
                         break;

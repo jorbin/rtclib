@@ -29,7 +29,7 @@ namespace sepwind
         /// </summary>
         /// <param name="layer"></param>
         public Line(Layer layer)
-            : base("Line", layer)
+            : base(layer, "Line")
         {
         }
 

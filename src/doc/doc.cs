@@ -25,7 +25,7 @@ namespace sepwind
         public Doc(string name)
         {
             this.Name = name;
-            this.Layers = new Layers();
+            this.Layers = new Layers(this);
         }
 
     }

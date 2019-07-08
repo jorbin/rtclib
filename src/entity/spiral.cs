@@ -43,7 +43,7 @@ namespace sepwind
         /// </summary>
         /// <param name="layer"></param>
         public Spiral(Layer layer)
-            : base("Spiral", layer)
+            : base(layer, "Spiral")
         {
         }
 

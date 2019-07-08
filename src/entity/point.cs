@@ -28,7 +28,7 @@ namespace sepwind
         /// </summary>
         /// <param name="layer"></param>
         public Point(Layer layer)
-            : base("Point", layer)
+            : base(layer, "Point")
         {
         }
         public Point(Layer layer, double x, double y)

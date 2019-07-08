@@ -31,7 +31,7 @@ namespace sepwind
         /// </summary>
         /// <param name="layer"></param>
         public Circle(Layer layer)
-            : base("Circle", layer)
+            : base(layer, "Circle")
         {
         }
 

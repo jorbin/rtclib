@@ -54,7 +54,7 @@ namespace sepwind
         /// </summary>
         /// <param name="layer"></param>
         public Param(Layer layer)
-            : base("Param", layer)
+            : base(layer, "Param")
         {
         }
 

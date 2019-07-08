@@ -11,12 +11,20 @@ namespace sepwind
     /// </summary>
     public abstract class Entity
     {
+        /// <summary>
+        /// entity name
+        /// </summary>
         public string Name { get; }
+
+        /// <summary>
+        /// selected or not
+        /// </summary>
+        public bool Selected { get; set; }
 
         /// <summary>
         /// self contained layer
         /// </summary>
-        public Layer Layer { get; set; }
+        public Layer Owner { get; set; }
 
         /// <summary>
         /// constructor
@@ -27,13 +35,13 @@ namespace sepwind
             this.Name = name;
         }
 
-        public Entity(string name, Layer layer)
+        public Entity(Layer owner, string name)
         {
             this.Name = name;
-            if (null != layer)
+            if (null != owner)
             {
-                this.Layer = layer;
-                layer.Add(this);
+                this.Owner = owner;
+                owner.Add(this);
             }
         }
 
