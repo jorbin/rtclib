@@ -1,11 +1,15 @@
 # rtclib
 
-rtclib (SCANLAB's RTC library for C#)
+Super-easy library for SCANLAB's RTC via C#
 
 1. Descriptions                                                
-  Library for Scanlab's RTC 5/6/6Ether             
-                                                                
-                                                                
+  support RTC5/6/6Ether controller
+  support field correction (via correXionPro.exe)
+  support matrix with push/pop stack
+  support MVC concepts(entity/layer/block)
+  support Opengl renderer (working...)
+  
+  
 2. Author                                                      
   hong chan, choi (sepwind@gmail.com)                           
   homepage : http://sepwind.blogspot.com                        
@@ -18,3 +22,9 @@ rtclib (SCANLAB's RTC library for C#)
                                                                 
                                                                 
 4. Version history                                                                                                           
+  0.1 simple IRTC interface operations
+      3x3 matrix operations with stack push/pop
+      support Doc/Entity/Layer
+      support scanner field correction (2D)
+      
+  
