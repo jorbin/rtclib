@@ -42,6 +42,11 @@ namespace sepwind
         /// </summary>
         uint Index { get; }
 
+        /// <summary>
+        /// global 3x3 matrix stack with push/pop
+        /// </summary>
+        MatrixStack Matrix { get; }
+
         #region commands for control
         /// <summary>
         /// initializing rtc card
@@ -80,13 +85,7 @@ namespace sepwind
         /// </summary>
         /// <param name="position">X,Y position (mm)</param>
         /// <returns></returns>
-        bool CtlMove(Vector2 position);
-        /// <summary>
-        /// set 3*3 matrix 
-        /// </summary>
-        /// <param name="matrix"></param>
-        /// <returns></returns>
-        bool CtlMatrix(Matrix3x2 matrix);
+        bool CtlMove(Vector2 position);       
         /// <summary>
         /// default laser pulse repetition rate and pulse width
         /// </summary>
@@ -216,16 +215,9 @@ namespace sepwind
         /// <returns></returns>
         bool ListArc(Vector2 center, double sweepAngle);
         /// <summary>
-        /// insert list command
-        /// set 3*3 matrix 
+        /// end of list buffer
         /// </summary>
-        /// <param name="matrix"></param>
-        /// <returns></returns>
-        bool ListMatrix(Matrix3x2 matrix);
-        /// <summary>
-        /// close internal list buffers
-        /// </summary>
-        /// <returns></returns>
+        /// <returns></returns>s
         bool ListEnd();
         /// <summary>
         /// execute inserted list commands if remains

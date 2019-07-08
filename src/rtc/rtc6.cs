@@ -35,7 +35,7 @@ namespace sepwind
     public class Rtc6 : IRtc 
     {
         public uint Index { get; }
-
+        public MatrixStack Matrix { get; }
         protected double kFactor;
         protected string[] ctbFileName = new string[4 + 1];
         protected bool aborted;        
@@ -48,8 +48,7 @@ namespace sepwind
         {
             this.Index = index;           
             this.listIndex = 1;
-            this.matrix = new Matrix3x2();
-            this.matrix = Matrix3x2.Identity;
+            this.Matrix = new MatrixStack();
         }
         ~Rtc6()
         {
@@ -124,17 +123,12 @@ namespace sepwind
         }
         public bool CtlMove(Vector2 vPosition)
         {
-            Vector2 v = Vector2.Transform(vPosition, this.matrix);
+            Vector2 v = Vector2.Transform(vPosition, this.Matrix.Calculate);
             int xBits = Convert.ToInt32(v.X * this.kFactor);
             int yBits = Convert.ToInt32(v.Y * this.kFactor);
             RTC6Wrap.n_goto_xy(this.Index + 1, xBits, yBits);
             return true;
         }        
-        public bool CtlMatrix(Matrix3x2 matrix)
-        {
-            this.matrix = matrix;
-            return true;
-        }
         public bool CtlFrequency(double frequency, double pulseWidth)
         {
             if (this.CtlGetStatus(RtcStatus.Busy))
@@ -383,7 +377,7 @@ namespace sepwind
         {
             if (this.CtlGetStatus(RtcStatus.Aborted))
                 return false;
-            Vector2 v = Vector2.Transform(vPosition, this.matrix);
+            Vector2 v = Vector2.Transform(vPosition, this.Matrix.Calculate);
             int xBits = (int)(v.X * this.kFactor);
             int yBits = (int)(v.Y * this.kFactor);
             if (!this.IsListReady(1))
@@ -399,7 +393,7 @@ namespace sepwind
 
             if (this.CtlGetStatus(RtcStatus.Aborted))
                 return false;
-            Vector2 v = Vector2.Transform(vPosition, this.matrix);
+            Vector2 v = Vector2.Transform(vPosition, this.Matrix.Calculate);
             int xBits = (int)(v.X * this.kFactor);
             int yBits = (int)(v.Y * this.kFactor);
             if (!this.IsListReady(1))
@@ -413,7 +407,7 @@ namespace sepwind
             if (this.CtlGetStatus(RtcStatus.Aborted))
                 return false;
 
-            Vector2 v = Vector2.Transform(center, this.matrix);
+            Vector2 v = Vector2.Transform(center, this.Matrix.Calculate);
             int quot = (int)(Math.Abs(sweepAngle) / 360.0);
             double rem = sweepAngle - Math.Sign(sweepAngle) * 360.0f * quot;
             if (!this.IsListReady((uint)(quot + 1)))
@@ -422,12 +416,7 @@ namespace sepwind
                 RTC6Wrap.n_arc_abs(this.Index + 1, (int)(center.X * this.kFactor), (int)(center.Y * this.kFactor), Math.Sign(sweepAngle) * -360.0);
             RTC6Wrap.n_arc_abs(this.Index + 1, (int)(center.X * this.kFactor), (int)(center.Y * this.kFactor), -rem);
             return true;
-        }        
-        public bool ListMatrix(Matrix3x2 matrix)
-        {
-            this.matrix = matrix;
-            return true;
-        }       
+        }           
         public bool ListEnd()
         {
             if (this.CtlGetStatus(RtcStatus.Aborted))

@@ -130,9 +130,10 @@ namespace sepwind
             rtc.ListBegin();
             for (double angle = angleStart; angle <= angleEnd; angle += 1)
             {
-                rtc.ListMatrix(Matrix3x2.CreateRotation((float)(angle * Math.PI / 180.0)));
+                rtc.Matrix.Push(angle);
                 rtc.ListJump(new System.Numerics.Vector2(-10, 0));
                 rtc.ListMark(new System.Numerics.Vector2(10, 0));
+                rtc.Matrix.Pop();
             }
             rtc.ListEnd();
         }       

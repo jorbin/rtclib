@@ -66,12 +66,14 @@ namespace sepwind
 
             bool success = true;
             ///translate arc's center
-            success &= rtc.ListMatrix(Matrix3x2.CreateTranslation((float)this.X, (float)this.Y));
+            rtc.Matrix.Push(this.X, this.Y);
             ///jump to start pos
             double x = this.Radius * Math.Sin(this.StartAngle * Math.PI / 180.0);
             double y = this.Radius * Math.Cos(this.SweepAngle * Math.PI / 180.0);
             success &= rtc.ListJump(new Vector2((float)x, (float)y));
             success &= rtc.ListArc(new Vector2(0.0f, 0.0f), this.SweepAngle);
+            ///revert matrix
+            rtc.Matrix.Pop();
             return success;
         }
     }

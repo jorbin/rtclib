@@ -159,8 +159,9 @@ namespace sepwind
             ///jump to start pos
             foreach (var item in this)
             {
-                success &= rtc.ListMatrix(item.Matrix);
+                rtc.Matrix.Push(item.Matrix);
                 success &= this.block.Mark(rtc);
+                rtc.Matrix.Pop();
                 if (!success)
                     break;
             }

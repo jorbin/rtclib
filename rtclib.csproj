@@ -57,7 +57,7 @@
     <Compile Include="src\entity\point.cs" />
     <Compile Include="src\entity\polyline.cs" />
     <Compile Include="src\entity\spiral.cs" />
-    <Compile Include="src\util\mathutil.cs" />
+    <Compile Include="src\util\matrixstack.cs" />
     <Compile Include="src\rtc\rtc.cs" />
     <Compile Include="src\rtc\rtc5.cs" />
     <Compile Include="src\rtc\rtc6.cs" />

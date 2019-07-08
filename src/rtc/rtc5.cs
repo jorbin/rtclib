@@ -36,21 +36,19 @@ namespace sepwind
     public sealed class Rtc5 : IRtc
     {
         public uint Index { get; }
-
+        public MatrixStack Matrix { get; }
         private double kFactor;
         private string[] ctbFileName = new string[4 + 1];
         private bool aborted;
         private uint listIndex;
         private uint listCount;
-        private Matrix3x2 matrix;
         private bool disposed = false;
 
         public Rtc5(uint index)
         {
             this.Index = index;
             this.listIndex = 1;
-            this.matrix = new Matrix3x2();
-            this.matrix = Matrix3x2.Identity;
+            this.Matrix = new MatrixStack();            
         }
         ~Rtc5()
         {
@@ -125,17 +123,12 @@ namespace sepwind
         }
         public bool CtlMove(Vector2 vPosition)
         {           
-            Vector2 v = Vector2.Transform(vPosition, this.matrix);
+            Vector2 v = Vector2.Transform(vPosition, this.Matrix.Calculate);
             int xBits = Convert.ToInt32(v.X * this.kFactor);
             int yBits = Convert.ToInt32(v.Y * this.kFactor);
             RTC5Wrap.n_goto_xy(this.Index + 1, xBits, yBits);            
             return true;
         }        
-        public bool CtlMatrix(Matrix3x2 matrix)
-        {
-            this.matrix = matrix;
-            return true;
-        }
         public bool CtlFrequency(double frequency, double pulseWidth)
         {
             if (this.CtlGetStatus(RtcStatus.Busy))
@@ -383,7 +376,7 @@ namespace sepwind
         {
             if (this.CtlGetStatus(RtcStatus.Aborted))
                 return false;            
-            Vector2 v = Vector2.Transform(vPosition, this.matrix);
+            Vector2 v = Vector2.Transform(vPosition, this.Matrix.Calculate);
             int xBits = (int)(v.X * this.kFactor);
             int yBits = (int)(v.Y * this.kFactor);            
             if (!this.IsListReady(1))
@@ -399,7 +392,7 @@ namespace sepwind
 
             if (this.CtlGetStatus(RtcStatus.Aborted))
                 return false;
-            Vector2 v = Vector2.Transform(vPosition, this.matrix);
+            Vector2 v = Vector2.Transform(vPosition, this.Matrix.Calculate);
             int xBits = (int)(v.X * this.kFactor);
             int yBits = (int)(v.Y * this.kFactor);
             if (!this.IsListReady(1))
@@ -413,7 +406,7 @@ namespace sepwind
             if (this.CtlGetStatus(RtcStatus.Aborted))
                 return false;
           
-            Vector2 v = Vector2.Transform(center, this.matrix);
+            Vector2 v = Vector2.Transform(center, this.Matrix.Calculate);
             int quot = (int)(Math.Abs(sweepAngle) / 360.0);
             double rem = sweepAngle - Math.Sign(sweepAngle) * 360.0f * quot;
             if (!this.IsListReady((uint)(quot + 1)))
@@ -421,11 +414,6 @@ namespace sepwind
             for (int i = 0; i < quot; i++)
                 RTC5Wrap.n_arc_abs(this.Index + 1, (int)(center.X * this.kFactor), (int)(center.Y * this.kFactor), Math.Sign(sweepAngle) * -360.0);
             RTC5Wrap.n_arc_abs(this.Index + 1, (int)(center.X * this.kFactor), (int)(center.Y * this.kFactor), -rem);
-            return true;
-        }
-        public bool ListMatrix(Matrix3x2 matrix)
-        {
-            this.matrix = matrix;
             return true;
         }
         public bool ListEnd()

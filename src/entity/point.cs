@@ -50,10 +50,12 @@ namespace sepwind
         public override bool Mark(IRtc rtc)
         {
             bool success = true;
+            rtc.Matrix.Push(this.X, this.Y);
             ///jump to start pos
-            success &= rtc.ListJump(new Vector2((float)this.X, (float)this.Y));
+            success &= rtc.ListJump(new Vector2(0, 0));
             ///dwell during assgined time
             success &= rtc.ListWait(this.Time);
+            rtc.Matrix.Pop();
             return success;
         }
     }

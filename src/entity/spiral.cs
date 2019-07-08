@@ -80,7 +80,7 @@ namespace sepwind
             bool success = true;
             
             ///translate spiral's center
-            success &= rtc.ListMatrix(Matrix3x2.CreateTranslation((float)this.X, (float)this.Y));
+            rtc.Matrix.Push(this.X, this.Y);
             ///jump to start pos
             success &= rtc.ListJump(new Vector2( (float)(this.InnerDiameter / 2.0), 0.0f));
             ///calculate radial pitch 
@@ -104,6 +104,8 @@ namespace sepwind
             }
             if (success && this.Closed)
                 success &= rtc.ListArc(new Vector2(0.0f, 0.0f), 360.0);
+
+            rtc.Matrix.Pop();
             return success;
         }
     }

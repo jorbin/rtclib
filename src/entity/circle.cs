@@ -60,11 +60,12 @@ namespace sepwind
 
             bool success = true;
             ///translate circle's center
-            success &= rtc.ListMatrix(Matrix3x2.CreateTranslation((float)this.X, (float)this.Y));
+            rtc.Matrix.Push(this.X, this.Y);
             ///jump to start pos
             success &= rtc.ListJump(new Vector2((float)(this.Radius), 0.0f));       
             ///rotate 360 degress with CCW
             success &= rtc.ListArc(new Vector2(0.0f, 0.0f), 360.0);
+            rtc.Matrix.Pop();
             return success;
         }
     }
