@@ -16,11 +16,13 @@ namespace sepwind
         /// <summary>
         /// start position
         /// </summary>
-        public Vector2 Start { get; set; }
+        public double StartX { get; set; }
+        public double StartY { get; set; }
         /// <summary>
         /// end position
         /// </summary>
-        public Vector2 End { get; set; }        
+        public double EndX { get; set; }
+        public double EndY { get; set; }
 
         /// <summary>
         /// constructor
@@ -31,11 +33,13 @@ namespace sepwind
         {
         }
 
-        public Line(Layer layer, Vector2 start, Vector2 end)
+        public Line(Layer layer, double startX, double startY, double endX, double endY)
             : this (layer)
         {
-            this.Start = start;
-            this.End = end;
+            this.StartX = startX;
+            this.StartY = startY;
+            this.EndX = endX;
+            this.EndY = endY;
         }
 
         /// <summary>
@@ -47,9 +51,9 @@ namespace sepwind
         {
             bool success = true;
             ///jump to start pos
-            success &= rtc.ListJump(this.Start);
+            success &= rtc.ListJump(new Vector2((float)this.StartX, (float)this.StartY));
             ///mark to end pos
-            success &= rtc.ListMark(this.End);
+            success &= rtc.ListMark(new Vector2((float)this.EndX, (float)this.EndY));
             return success;
         }
     }

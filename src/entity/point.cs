@@ -16,7 +16,8 @@ namespace sepwind
         /// <summary>
         /// position
         /// </summary>
-        public Vector2 Pos { get; set; }
+        public double X { get; set; }
+        public double Y { get; set; }
         /// <summary>
         /// msec
         /// </summary>
@@ -30,13 +31,14 @@ namespace sepwind
             : base("Point", layer)
         {
         }
-        public Point(Layer layer, Vector2 pos)
+        public Point(Layer layer, double x, double y)
             : this(layer)
         {
-            this.Pos = pos;
+            this.X = x;
+            this.Y = y;
         }
-        public Point(Layer layer, Vector2 pos, double timeMsec)
-            : this(layer, pos)
+        public Point(Layer layer, double x, double y, double timeMsec)
+            : this(layer, x, y)
         {
             this.Time = timeMsec;
         }
@@ -49,7 +51,7 @@ namespace sepwind
         {
             bool success = true;
             ///jump to start pos
-            success &= rtc.ListJump(this.Pos);
+            success &= rtc.ListJump(new Vector2((float)this.X, (float)this.Y));
             ///dwell during assgined time
             success &= rtc.ListWait(this.Time);
             return success;

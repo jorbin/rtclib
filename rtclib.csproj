@@ -47,19 +47,22 @@
     <Compile Include="src\doc\entity.cs" />
     <Compile Include="src\doc\layer.cs" />
     <Compile Include="src\doc\layers.cs" />
+    <Compile Include="src\entity\arc.cs" />
     <Compile Include="src\entity\circle.cs" />
     <Compile Include="src\entity\line.cs" />
     <Compile Include="src\entity\param.cs" />
     <Compile Include="src\entity\point.cs" />
+    <Compile Include="src\entity\polyline.cs" />
     <Compile Include="src\entity\spiral.cs" />
-    <Compile Include="src\rtc.cs" />
-    <Compile Include="src\rtc5.cs" />
-    <Compile Include="src\rtc6.cs" />
-    <Compile Include="src\rtc6ethernet.cs" />
-    <Compile Include="src\rtccorrection.cs" />
-    <Compile Include="src\rtccorrection2d.cs" />
-    <Compile Include="src\scanlab\RTC5Wrap.cs" />
-    <Compile Include="src\scanlab\RTC6Wrap.cs" />
+    <Compile Include="src\util\mathutil.cs" />
+    <Compile Include="src\rtc\rtc.cs" />
+    <Compile Include="src\rtc\rtc5.cs" />
+    <Compile Include="src\rtc\rtc6.cs" />
+    <Compile Include="src\rtc\rtc6ethernet.cs" />
+    <Compile Include="src\correction\rtccorrection.cs" />
+    <Compile Include="src\correction\rtccorrection2d.cs" />
+    <Compile Include="src\rtc\scanlab\RTC5Wrap.cs" />
+    <Compile Include="src\rtc\scanlab\RTC6Wrap.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

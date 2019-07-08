@@ -30,8 +30,11 @@ namespace sepwind
         public Entity(string name, Layer layer)
         {
             this.Name = name;
-            this.Layer = layer;
-            layer.Add(this);
+            if (null != layer)
+            {
+                this.Layer = layer;
+                layer.Add(this);
+            }
         }
 
         /// <summary>

@@ -33,7 +33,7 @@ namespace sepwind
             doc = new Doc("entities for field correction");
             Layer layer = doc.Layers.Active;    ///current active layer
             layer.Clear();
-            /// 9 measured points (3x3 positions by milli-meter units)
+            /// 9 measured points (mm unit)
             layer.Add(new Spiral(doc.Layers.Active, -20.0f, 20.0f, 0.5, 2.0, 5, true) );
             layer.Add(new Spiral(doc.Layers.Active, 0.0f, 20.0f, 0.5, 2.0, 5, true));
             layer.Add(new Spiral(doc.Layers.Active, 20.0f, 20.0f, 0.5, 2.0, 5, true));
@@ -61,7 +61,7 @@ namespace sepwind
                 key = Console.ReadKey(false);
                 if (key.Key == ConsoleKey.Q)
                     break;
-
+                Console.WriteLine("WARNING !!! LASER IS BUSY ...");
                 var timer = new Stopwatch();
                 switch (key.Key)
                 {
@@ -81,10 +81,6 @@ namespace sepwind
                         DrawForFieldCorrection(rtc, doc);
                         break;
                 }
-                Console.WriteLine("WARNING !!! press any key to fire the laser ...");
-                key = Console.ReadKey(false);
-                if (key.Key == ConsoleKey.Q)
-                    break;
                 rtc.ListExecute(true);
                 Console.WriteLine($"processing time = {timer.ElapsedMilliseconds/1000.0:F3}s");                
             } while (true);

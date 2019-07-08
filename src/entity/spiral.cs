@@ -26,7 +26,7 @@ namespace sepwind
         /// </summary>
         public int Revolutions { get; set; }
         /// <summary>
-        /// closed or not
+        /// closed figure or not
         /// </summary>
         public bool Closed { get; set; }
         /// <summary>
